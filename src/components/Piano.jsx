@@ -1,62 +1,49 @@
+import { useRef } from 'react'
 import Key from './Key'
 
 const Piano = () => {
   const keys = [
-    'C5',
-    'Db5',
-    'D5',
-    'Eb5',
-    'E5',
-    'F5',
-    'Gb5',
-    'G5',
-    'Ab5',
-    'A5',
-    'Bb5',
-    'B5',
-    'C6',
-    'Db6',
-    'D6',
-    'Eb6',
-    'E6',
-    'F6',
+    { note: 'C5', keyboard: 'a' },
+    { note: 'Db5', keyboard: 'w' },
+    { note: 'D5', keyboard: 's' },
+    { note: 'Eb5', keyboard: 'e' },
+    { note: 'E5', keyboard: 'd' },
+    { note: 'F5', keyboard: 'f' },
+    { note: 'Gb5', keyboard: 't' },
+    { note: 'G5', keyboard: 'g' },
+    { note: 'Ab5', keyboard: 'y' },
+    { note: 'A5', keyboard: 'h' },
+    { note: 'B5', keyboard: 'j' },
+    { note: 'C6', keyboard: 'k' },
+    { note: 'Db6', keyboard: 'o' },
+    { note: 'D6', keyboard: 'l' },
+    { note: 'Eb6', keyboard: 'p' },
+    { note: 'E6', keyboard: ';' },
+    { note: 'F6', keyboard: "'" },
   ]
 
-  const keysOnKeyboard = [
-    'a',
-    'w',
-    's',
-    'e',
-    'd',
-    'f',
-    't',
-    'g',
-    'y',
-    'h',
-    'u',
-    'j',
-    'k',
-    'o',
-    'l',
-    'p',
-    ';',
-    "'",
-  ]
+  const audioCache = useRef({})
 
   const playSound = (note) => {
-    new Audio(`/sounds/${note}.mp3`).play()
+    if (!audioCache.current[note]) {
+      audioCache.current[note] = new Audio(`/sounds/${note}.mp3`)
+    }
+
+    audioCache.current[note].currentTime = 0
+    audioCache.current[note].play()
   }
 
   return (
     <div className="piano">
       <ul className="piano__keys">
-        {keys.map((key, i) => {
+        {keys.map(({ note, keyboard }) => {
+          const isBlackKey = note.includes('b')
           return (
             <Key
-              color={key.length === 3 ? 'black' : 'white'}
-              id={key}
-              keyOnKeyboard={keysOnKeyboard[i]}
-              key={key}
+              color={isBlackKey ? 'black' : 'white'}
+              id={note}
+              keyOnKeyboard={keyboard}
+              key={note}
               playSound={playSound}
             />
           )
