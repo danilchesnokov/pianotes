@@ -13,6 +13,7 @@ const Piano = () => {
     { note: 'G5', keyboard: 'g' },
     { note: 'Ab5', keyboard: 'y' },
     { note: 'A5', keyboard: 'h' },
+    { note: 'Bb5', keyboard: 'u' },
     { note: 'B5', keyboard: 'j' },
     { note: 'C6', keyboard: 'k' },
     { note: 'Db6', keyboard: 'o' },
