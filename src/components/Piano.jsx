@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import Key from './Key'
 
 const Piano = () => {
@@ -33,6 +33,29 @@ const Piano = () => {
     audioCache.current[note].currentTime = 0
     audioCache.current[note].play()
   }
+
+  const keyMap = useRef(
+    keys.reduce((acc, { note, keyboard }) => {
+      acc[keyboard] = note
+      return acc
+    }, {})
+  )
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.repeat) return
+
+      const key = e.key.toLowerCase()
+      const note = keyMap.current[key]
+
+      if (note) {
+        playSound(note)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <div className="piano">
